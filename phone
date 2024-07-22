@@ -1,0 +1,57 @@
+package games;
+
+import java.util.Scanner;
+
+public class Array_5 {
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		String[] speedDial = new String[10]; // Array to store phone numbers
+
+		while (true) {
+			System.out.println("\nSpeed Dial Menu:");
+			System.out.println("1 - Enter a number");
+			System.out.println("2 - Dial a number");
+			System.out.println("3 - Exit");
+			System.out.print("Choose an option: ");
+			int option = scanner.nextInt();
+			scanner.nextLine(); // Consume newline
+
+			if (option == 1) {
+				System.out.print("Enter speed-dial location (0-9): ");
+				int location = scanner.nextInt();
+				scanner.nextLine(); // Consume newline
+
+				if (location < 0 || location > 9) {
+					System.out.println("Invalid location. Please enter a number between 0 and 9.");
+				} else {
+					System.out.print("Enter the telephone number: ");
+					String phoneNumber = scanner.nextLine();
+					speedDial[location] = phoneNumber;
+					System.out.println("Number stored in location " + location + ".");
+				}
+
+			} else if (option == 2) {
+				System.out.print("Enter speed-dial location (0-9): ");
+				int location = scanner.nextInt();
+				scanner.nextLine(); // Consume newline
+
+				if (location < 0 || location > 9) {
+					System.out.println("Invalid location. Please enter a number between 0 and 9.");
+				} else {
+					if (speedDial[location] == null) {
+						System.out.println("There is no current number stored in location " + location + ".");
+					} else {
+						System.out.println("Dialing... " + speedDial[location]);
+					}
+				}
+
+			} else if (option == 3) {
+				System.out.println("Exiting program.");
+				break;
+
+			} else {
+				System.out.println("Invalid option. Please choose 1, 2, or 3.");
+			}
+		}
+	}
+}

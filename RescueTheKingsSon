@@ -1,0 +1,420 @@
+/*
+ * Name: Dhruv Parikh
+ * Date: 6/19/24
+ * Description: Navigate your way through the magical fortresses to rescue the King's Son after a dumb mistake caused by you. Note: There 4 ways too win.
+ */
+package RescueTheKingsSon_Dhruv;
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class RescueTheKingsSon_Dhruv {
+	/*
+	 * Global variables for hearts, stamina, an array that will be used for the
+	 * items along the way, itemsCounter to indicate where each item is at in the
+	 * array, randomizeItem will randomize a list into a certain data type like Int.
+	 */
+	static int hearts = 3;
+	static double stamina = 50.0;
+	static String[] items = new String[10];
+	static int itemsCounter = 0;
+	static Scanner x = new Scanner(System.in);
+	static Random randomizeItem = new Random();
+
+	public static void main(String[] args) {
+		//The title of the game
+		System.out.println("Welcome to Rescue The King's Son.");
+		//Story
+		System.out.println("Story: The royal families are at War. Larry whos a townsperson which is located in "
+				+ "\nbetween the 2 fortresses was on a walk to buy food near fortress A. The guards near "
+				+ "\nfortress A arrest Larry thinking hes the guy that is wanted at this fortress. While Larry is "
+				+ "\nbeing arrested a person sneaks into the fortress and kidnaps the King's son. Larry is "
+				+ "\nnow devistated with this news, Larry is determined to get the king's son back.");
+		//Output the rules of the games.
+		rules();
+		//Starting values for heart and stamina.
+		stamina = 50;
+		hearts = 3;
+		//Checks if stamina > 0 and hearts > 0.
+		while (checkIfPlayerIsAlive()) {
+			System.out.println("Hearts: " + hearts + ", Stamina: " + stamina);
+			if (!PartA()) {
+				System.out.println("Going back to the start.");
+				continue;
+			}
+			if (!PartB()) {
+				System.out.println("Going back to the start.");
+				continue;
+			}
+
+			break;
+		}
+		//Checks if you lost the game or not.
+		if (checkIfPlayerIsAlive()) {
+			System.out.println("Congratulations, you made it to the second Fortress and found the King's Son."
+					+ " You took him back home and got payed billions of dollars for rescuing the king's son. You"
+					+ " lived happliy ever after.");
+		} else {
+			System.out.println("Unfortunately, you died on your way to the end. ");
+		}
+
+	}
+	//Part A of the story.
+	public static boolean PartA() {
+		System.out.println(
+				"\nPart A: You are locked up in the cell. " + "\nYou find the guards gun near the prison cell door. "
+						+ "\nDo you reach for it and shoot the lock on the cell Or look for another exit?");
+		System.out.println("1. Shoot the lock");
+		System.out.println("2. Look around for another escape option");
+		//Figuring out what you choice and giving you more prompt options if you don't lose hearts.
+		int choice = x.nextInt();
+		if (choice == 1) {
+			hearts = 0;
+			System.out.println("You shot the lock and instantly lost all your hearts.");
+		} else if (choice == 2) {
+			System.out.println("You ended up finding a hole below your bed and escaped the cell thorugh there."
+					+ "/n There now 2 doors you can open. 1: Being a room filled with guards, however there is"
+					+ " a guard suit near the door. Do you pretend to be a guard and sneak past them or take"
+					+ " the other door?");
+			System.out.println("1. Pretend to be a guard and sneak past them");
+			System.out.println("2. Go through a secret door");
+		}
+		//Figuring out what you choice and giving you more prompt options if you don't lose hearts.
+		choice = x.nextInt();
+		if (choice == 1) {
+			hearts--;
+			System.out.println("The guard suits falls off of your body and the guards shoot at you.");
+			return false;
+		} else if (choice == 2) {
+			Stamina();
+			//Randomize the 4 items and gives you one.
+			String item = randomize();
+			addItemToInventory(item);
+			System.out.println("You gained a " + item + " and the only escape is through the window so you leave "
+					+ "through there.");
+		}
+		return true;
+	}
+	//Part B of the story
+	public static boolean PartB() {
+		System.out.println("\nPart B: You are now outside of the prison cell. You enter a suspicious bush. "
+				+ "Do you want to search the bush or Stay on the main path or Enter the woods?");
+		System.out.println("1. Search the bush");
+		System.out.println("2. Stay on main outside path");
+		System.out.println("3. Enter the woods");
+		//Figuring out what you choice and giving you more prompt options if you don't lose hearts.
+		int choice = x.nextInt();
+		if (choice == 1) {
+			System.out.println("You gained stamina while searching the bush. Do you want to keep searching the "
+					+ "bush or return to the main outside path or enter the woods?");
+			System.out.println("1. Keep searching the bush");
+			System.out.println("2. Return to main outside path");
+			System.out.println("3. Enter the woods");
+			//Figuring out what you choice and giving you more prompt options if you don't lose hearts.
+			choice = x.nextInt();
+			if (choice == 1) {
+				stamina += 25;
+				System.out.println("You gained more stamina.");
+				return PartB();
+			} else if (choice == 2) {
+				System.out.println("You were walking alongside the main path and encountered Guards.");
+				return encounterGuards(x);
+			} else if (choice == 3) {
+				System.out.println("You entered the woods and encountered Wolves.");
+				return encounterWolves(x);
+			}
+		} else if (choice == 2) {
+			System.out.println("You were walking alongside the main path and encountered Guards.");
+			return encounterGuards(x);
+		} else if (choice == 3) {
+			System.out.println("You entered the woods and encountered Wolves.");
+			return encounterWolves(x);
+		}
+		return true;
+	}
+	//This method randomize 4 items in the game and stores it into an array.
+	public static String randomize() {
+		String[] items = { "Invisible Potion", "Gun", "Bombs", "Shovel" };
+		int randomIndex = randomizeItem.nextInt(items.length);
+		return items[randomIndex];
+	}
+	//Every time you pick up an item it automatically gets put into an array.
+	public static void addItemToInventory(String item) {
+		System.out.println("Added item to inventory.");
+		if (itemsCounter < 10) {
+			items[itemsCounter] = item;
+			itemsCounter++;
+		}
+	}
+	//This method checks if you have the item in the array and alters the options that are given.
+	public static boolean inventoryContainsItem(String item) {
+		for (int i = 0; i < itemsCounter; i++) {
+			if (items[i] == item) {
+				return true;
+			}
+		}
+		return false;
+	}
+	//Checks if the game is supposed to end or not.
+	public static boolean checkIfPlayerIsAlive() {
+		if (hearts <= 0) {
+			return false;
+		}
+		if (stamina <= 0) {
+			return false;
+		}
+		return true;
+	}
+	//The rules for the game.
+	public static void rules() {
+		System.out.println("Rules:");
+		System.out.println("1. You start with 3 hearts and 50 stamina.");
+		System.out.println("2. If you lose all your hearts, the game ends.");
+		System.out.println("3. If you run out of stamina, the game ends.");
+		System.out.println("4. Collect items to help you along the way.");
+		System.out.println("5. Throughout the game you can gain stamina.");
+		System.out.println("6. You win by rescuing the King's Son.");
+	}
+	//Randomize the stamina lost through 0-10.
+	public static double Stamina() {
+		int randomAmount = randomizeItem.nextInt(10);
+		System.out.println("You lost " + randomAmount + " stamina.");
+		return stamina - randomAmount;
+	}
+	//Set a specific amount of stamina lost.
+	public static double Stamina(int amount) {
+		System.out.println("You lost " + amount + " stamina.");
+		return stamina - amount;
+	}
+	//Option 2 from part B.
+	public static boolean encounterGuards(Scanner scanner) {
+		//Checks if you have of these 4 items and change the options based off of what you have.
+		boolean hasInvisiblePotion = inventoryContainsItem("Invisible Potion");
+		boolean hasGun = inventoryContainsItem("Gun");
+		boolean hasBombs = inventoryContainsItem("Bombs");
+		boolean hasShovel = inventoryContainsItem("Shovel");
+		//Works only if you have a Invisible Potion.
+		if (hasInvisiblePotion) {
+			System.out.println("Do you want to use your invisible potion or fight or run past the guards?");
+			System.out.println("1. Use Invisible Potion");
+			System.out.println("2. Fight guards");
+			System.out.println("3. Run past them");
+			int choice = scanner.nextInt();
+			if (choice == 1 && hasInvisiblePotion) {
+				Stamina();
+				hearts --;
+				System.out.println("Guards noticed you, using the invisible potion. Lost 1 heart.");
+				return false;
+			} else if (choice == 2) {
+				hearts -= 2;
+				System.out.println("You fought the guards and lost 2 hearts.");
+				return false;
+			} else {
+				Stamina(15);
+				hearts --;
+				System.out.println("You ran past the guards, but you were too slow and they shot you.");
+				return false;
+			}
+		} 
+		//Works only if you have a Gun.
+		else if (hasGun) {
+			System.out.println("Do you want to use your Gun or fight or run past the guards?");
+			System.out.println("1. Use Gun");
+			System.out.println("2. Fight guards");
+			System.out.println("3. Run past them");
+			int choice = scanner.nextInt();
+			if (choice == 1 && hasGun) {
+				Stamina();
+				System.out.println("You used Gun and the guards died.");
+				return true;
+			} else if (choice == 2) {
+				hearts -= 2;
+				System.out.println("You fought the guards and lost 2 hearts.");
+				return false;
+			} else {
+				Stamina(15);
+				hearts --;
+				System.out.println("You ran past the guards, but you were too slow and they shot you.");
+				return false;
+			}
+		} 
+		//Works only if you have a Bomb.
+		else if (hasBombs) {
+			System.out.println("Do you want to use your Bombs or fight or run past the guards?");
+			System.out.println("1. Use Bombs");
+			System.out.println("2. Fight guards");
+			System.out.println("3. Run past them");
+			int choice = scanner.nextInt();
+			if (choice == 1 && hasBombs) {
+				Stamina(25);
+				hearts ++;
+				System.out.println("You used the bombs and gained a life.");
+				return true;
+			} else if (choice == 2) {
+				hearts -= 2;
+				System.out.println("You fought the guards and lost 2 hearts.");
+				return false;
+			} else {
+				Stamina(15);
+				hearts --;
+				System.out.println("You ran past the guards, but you were too slow and they shot you.");
+				return false;
+			}
+		} 
+		//Works only if you have a Shovel.
+		else if (hasShovel) {
+			System.out.println("Do you want to use your Shovel or fight or run past the guards?");
+			System.out.println("1. Use Shovel");
+			System.out.println("2. Fight guards");
+			System.out.println("3. Run past them");
+			int choice = scanner.nextInt();
+			if (choice == 1 && hasShovel) {
+				Stamina();
+				hearts = 0;
+				System.out.println("Shovel wasn't strong enough.");
+				return false;
+			} else if (choice == 2) {
+				hearts -= 2;
+				System.out.println("You fought the guards and lost 2 hearts.");
+				return false;
+			} else {
+				Stamina(15);
+				hearts --;
+				System.out.println("You ran past the guards, but you were too slow and they shot you.");
+				return false;
+			}
+		} 
+		return true;
+	}
+	//Option 3 from Section B
+	public static boolean encounterWolves(Scanner scanner) {
+		//Checks if you have of these 4 items and change the options based off of what you have.
+		boolean hasInvisiblePotion = inventoryContainsItem("Invisible Potion");
+		boolean hasGun = inventoryContainsItem("Gun");
+		boolean hasBombs = inventoryContainsItem("Bombs");
+		boolean hasShovel = inventoryContainsItem("Shovel");
+		//Works only if you have a Invisible Potion.
+		if (hasInvisiblePotion) {
+			System.out.println("1. Use invisible poiton");
+			System.out.println("2. Fight wolves");
+			System.out.println("3. Run past them");
+			int choice = scanner.nextInt();
+			if (choice == 1) {
+				Stamina();
+				String item = randomize();
+				addItemToInventory(item);
+				System.out.println("You gained a " + item);
+				System.out.println("The wolves can't see you");
+				return true;
+			} else if (choice == 2) {
+				hearts--;
+				Stamina(20);
+				String item = randomize();
+				addItemToInventory(item);
+				System.out.println("You gained a " + item);
+				System.out.println("The wolves ate you up");
+				return false;
+			} else if (choice == 3) {
+				Stamina();
+				hearts --;
+				String item = randomize();
+				addItemToInventory(item);
+				System.out.println("You gained a " + item);
+				System.out.println("The wolves were faster.");
+				return false;
+			}
+	}
+		//Works only if you have a Gun.
+		else if (hasGun) {
+			System.out.println("1. Use Gun");
+			System.out.println("2. Fight wolves");
+			System.out.println("3. Run past them");
+			int choice = scanner.nextInt();
+			if (choice == 1) {	
+				Stamina();
+				hearts --;
+				String item = randomize();
+				addItemToInventory(item);
+				System.out.println("You gained a " + item);
+				System.out.println("You tried shooting the wolves but missed and caught the attention of the guards.");
+				return false;
+			} else if (choice == 2) {
+				hearts--;
+				Stamina(20);
+				String item = randomize();
+				addItemToInventory(item);
+				System.out.println("You gained a " + item);
+				System.out.println("The wolves ate you up");
+				return false;
+			} else if (choice == 3) {
+				Stamina();
+				hearts --;
+				String item = randomize();
+				addItemToInventory(item);
+				System.out.println("You gained a " + item);
+				System.out.println("The wolves were faster.");
+				return false;
+			}
+			} 
+		//Works only if you have Bombs.
+		else if (hasBombs) {
+				System.out.println("1. Use Bombs");
+				System.out.println("2. Fight wolves");
+				System.out.println("3. Run past them");
+				int choice = scanner.nextInt();
+				if (choice == 1) {
+					Stamina();
+					hearts --;
+					String item = randomize();
+					addItemToInventory(item);
+					System.out.println("You gained a " + item);
+					System.out.println("Bombs backfired and hit you.");
+					return false;
+				} else if (choice == 2) {
+					hearts--;
+					Stamina(20);
+					String item = randomize();
+					addItemToInventory(item);
+					System.out.println("You gained a " + item);
+					System.out.println("The wolves ate you up");
+					return false;
+				} else if (choice == 3) {
+					Stamina();
+					hearts --;
+					String item = randomize();
+					addItemToInventory(item);
+					System.out.println("You gained a " + item);
+					System.out.println("The wolves were faster.");
+				}			return false;}
+		//Works only if you have a Shovel.
+		else if (hasShovel) {
+			System.out.println("1. Use Shovel");
+			System.out.println("2. Fight wolves");
+			System.out.println("3. Run past them");
+			int choice = scanner.nextInt();
+			if (choice == 1) {	
+				Stamina();
+				String item = randomize();
+				addItemToInventory(item);
+				System.out.println("You gained a " + item);
+				System.out.println("You beat the Wolves with the shovel.");
+				return true;
+			} else if (choice == 2) {
+				hearts--;
+				Stamina(20);
+				String item = randomize();
+				addItemToInventory(item);
+				System.out.println("You gained a " + item);
+				System.out.println("The wolves ate you up");
+				return false;
+			} else if (choice == 3) {
+				Stamina();
+				hearts --;
+				String item = randomize();
+				addItemToInventory(item);
+				System.out.println("You gained a " + item);
+				System.out.println("The wolves were faster.");
+				return false;
+			}}
+		return true;
+	}}

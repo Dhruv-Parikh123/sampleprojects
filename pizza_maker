@@ -1,0 +1,74 @@
+package games;
+import java.util.Scanner;
+public class pizza_maker {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		
+		double toppings_price = 0;
+		double size_price = 0;
+		double total_price = 0;
+		double delivery_price = 0;
+		
+		System.out.println("Delivery or Pickup? (D = delivery and P = pickup): ");
+		String delivery = sc.next();
+		
+		if (delivery.equals("D")) {
+			delivery_price = 2.0;
+			System.out.println("Delivery Fee of $2");
+			}
+		else if (delivery.equals("P")) {
+			total_price = +0.0;
+			System.out.println("Pickup was selected");
+			}
+		
+		System.out.println("Enter size of pizza (L = large, M = medium, S = small): ");
+		String size = sc.next();
+		
+		System.out.println("Enter number of pizza toppings: ");
+		int topping = sc.nextInt();
+		
+		
+		if (size.equals("L")) {
+			size_price = +7.00;
+			if (topping >= 3) {
+				toppings_price = topping * 1.00;
+			}
+			else if (topping == 2) {
+				toppings_price = topping * 1.15;
+			} else if (topping == 1) {
+				toppings_price = topping * 1.25;
+			}
+		}
+		
+		else if (size.equals("M")) {
+			size_price = +6.00;
+			if (topping >= 3) {
+				toppings_price = topping * 0.80;
+			}
+			else if (topping == 2) {
+				toppings_price = topping * 0.9;
+			}
+			else if (topping == 1) {
+				toppings_price = topping * 1.00;
+			}
+		}
+		
+		else if (size.equals("S")) {
+			size_price = +5.00;
+			if (topping >= 3) {
+				toppings_price = topping * 0.65;
+			}
+			else if (topping == 2) {
+				toppings_price = topping * 0.70;
+			}
+			else if (topping == 1) {
+				toppings_price = topping * 0.75;
+			}
+		}
+		
+		
+		total_price = toppings_price + size_price + delivery_price;
+		System.out.print("The total price for a pizza with "+topping+" toppings is $"+total_price);
+	}
+}
